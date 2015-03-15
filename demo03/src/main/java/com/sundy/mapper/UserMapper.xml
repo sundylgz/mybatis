@@ -30,7 +30,6 @@
     </select>
 
 
-
     <select id="findUserList" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT
         <include refid="Base_Column_List"/>
@@ -42,4 +41,59 @@
         <include refid="Base_Column_List"/>
         FROM USER WHERE username LIKE #{username,jdbcType=VARCHAR}
     </select>
+
+    <select id="selectUserByHashmap" parameterType="hashmap" resultType="user">
+    select * from user where id=#{id} and username like '%${username}%'
+   </select>
+
+    <!--获取用户列表总数 -->
+    <select id="selectUserCount" resultType="int">
+      select count(1) from user
+    </select>
+
+    <select id="selectmapById" resultType="hashmap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <select id="selectUserByUser" parameterType="user" resultType="user">
+        select * from user
+        where 1=1
+        <if test="id!=null">
+            and id=#{id}
+        </if>
+        <if test="username!=null and username!=''">
+            and username = #{username,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <select id="selectUserByUser2" parameterType="user" resultType="user">
+        select * from user
+        <where>
+            <if test="id!=null">
+                and id=#{id}
+            </if>
+            <if test="username!=null and username!=''">
+                and username = #{username,jdbcType=VARCHAR}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="selectUserByList" parameterType="java.util.List" resultType="user">
+        select * from user
+        <where>
+            <!--传递List，List中是pojo -->
+            <if test="list!=null">
+                <foreach collection="list" item="item" open="and id in(" separator="," close=")">
+                    #{item.id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+
 </mapper>

@@ -2,6 +2,7 @@ package com.sundy.mapper;
 
 import com.sundy.pojo.User;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -13,8 +14,21 @@ public interface UserMapper {
 
     User selecttypeAlias(int id);
 
+    User selectUserByHashmap(HashMap hashMap);
 
     List<User> findUserList(String username);
 
     List<User> findUserList2(String username);
+
+    int selectUserCount();
+
+    HashMap<String, String> selectmapById(int id);
+
+    User selectUserByUser(User user);
+
+    User selectUserByUser2(User user);
+
+    List<User> selectUserByList(List<User> list);
+
+
 }
