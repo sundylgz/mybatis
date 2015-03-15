@@ -22,6 +22,12 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
 
+    <select id="findUserList" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM USER WHERE username LIKE '%${value}%'/* 这里是value 不是username*/
+    </select>
+
     <insert id="insertUser" parameterType="com.sundy.pojo.User">
         insert into user (id, username, birthday,
         sex, address, detail,

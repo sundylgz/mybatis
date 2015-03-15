@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by liuguozhu on 2015/3/15.
@@ -66,6 +67,21 @@ public class UserMapperInterfaceTest {
             UserMapperInterface userMapperInterface = session.getMapper(UserMapperInterface.class);
             User user = userMapperInterface.selectUserById(12);
             System.out.println(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+    }
+
+    @Test
+    public void findUserList() {
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            UserMapperInterface userMapperInterface = session.getMapper(UserMapperInterface.class);
+            List<User> users = userMapperInterface.findUserList("张三");
+            System.out.println(users);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
