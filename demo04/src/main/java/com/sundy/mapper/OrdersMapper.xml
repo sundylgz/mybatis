@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sundy.mapper.OrdersMapper">
+
+
+    <resultMap id="ordersUsermap" type="orders">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="order_number" property="orderNumber" jdbcType="VARCHAR"/>
+        <association property="user" javaType="com.sundy.pojo.User">
+            <id column="user_id" property="id"/>
+            <result column="username" property="username" jdbcType="VARCHAR"/>
+            <result column="birthday" property="birthday" jdbcType="TIMESTAMP"/>
+            <result column="sex" property="sex" jdbcType="SMALLINT"/>
+            <result column="address" property="address" jdbcType="VARCHAR"/>
+            <result column="detail" property="detail" jdbcType="VARCHAR"/>
+            <result column="score" property="score" jdbcType="INTEGER"/>
+        </association>
+    </resultMap>
+
+
+    <resultMap id="ordersDetailMap" type="orders">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="order_number" property="orderNumber" jdbcType="VARCHAR"/>
+        <association property="user" javaType="com.sundy.pojo.User">
+            <id column="user_id" property="id"/>
+            <result column="username" property="username" jdbcType="VARCHAR"/>
+            <result column="birthday" property="birthday" jdbcType="TIMESTAMP"/>
+            <result column="sex" property="sex" jdbcType="SMALLINT"/>
+            <result column="address" property="address" jdbcType="VARCHAR"/>
+            <result column="detail" property="detail" jdbcType="VARCHAR"/>
+            <result column="score" property="score" jdbcType="INTEGER"/>
+        </association>
+        <collection property="orderdetails" ofType="com.sundy.pojo.Orderdetail">
+            <id column="orderdetail_id" property="id" jdbcType="INTEGER"/>
+            <result column="orders_id" property="ordersId" jdbcType="INTEGER"/>
+            <result column="item_id" property="itemId" jdbcType="INTEGER"/>
+            <result column="item_num" property="itemNum" jdbcType="INTEGER"/>
+            <result column="item_price" property="itemPrice" jdbcType="REAL"/>
+        </collection>
+    </resultMap>
+
+
+    <resultMap id="ordersItemsMap" type="orders">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="order_number" property="orderNumber" jdbcType="VARCHAR"/>
+        <association property="user" javaType="com.sundy.pojo.User">
+            <id column="user_id" property="id"/>
+            <result column="username" property="username" jdbcType="VARCHAR"/>
+            <result column="birthday" property="birthday" jdbcType="TIMESTAMP"/>
+            <result column="sex" property="sex" jdbcType="SMALLINT"/>
+            <result column="address" property="address" jdbcType="VARCHAR"/>
+            <result column="detail" property="detail" jdbcType="VARCHAR"/>
+            <result column="score" property="score" jdbcType="INTEGER"/>
+        </association>
+        <collection property="orderdetails" ofType="com.sundy.pojo.Orderdetail">
+            <id column="orderdetail_id" property="id" jdbcType="INTEGER"/>
+            <result column="orders_id" property="ordersId" jdbcType="INTEGER"/>
+            <result column="item_id" property="itemId" jdbcType="INTEGER"/>
+            <result column="item_num" property="itemNum" jdbcType="INTEGER"/>
+            <result column="item_price" property="itemPrice" jdbcType="REAL"/>
+            <association property="items" javaType="com.sundy.pojo.Items">
+                <id column="item_id" property="id"/>
+                <result column="item_name" property="itemName" jdbcType="VARCHAR"/>
+                <result column="item_price" property="itemPrice" jdbcType="REAL"/>
+            </association>
+        </collection>
+    </resultMap>
+
+
+    <select id="findOrdersUserList" resultType="com.sundy.pojo.OrdersCustom">
+        SELECT
+        orders.*,
+        user.username,
+        user.address,
+        orderdetail.id orderdetail_id,
+        orderdetail.item_id,
+        orderdetail.item_num,
+        orderdetail.item_price
+        FROM orders,USER ,orderdetail
+        WHERE orders.user_id = user.id
+        AND orders.id = orderdetail.orders_id
+        AND user_id=1
+    </select>
+
+    <select id="findOrdersUserListResultMap" resultMap="ordersUsermap">
+        SELECT
+        orders.*,
+        user.username,
+        user.address,
+        orderdetail.id orderdetail_id,
+        orderdetail.item_id,
+        orderdetail.item_num,
+        orderdetail.item_price
+        FROM orders,USER ,orderdetail
+        WHERE orders.user_id = user.id
+        AND orders.id = orderdetail.orders_id
+        AND user_id=1
+    </select>
+
+    <select id="findOrdersDetailList" resultMap="ordersDetailMap">
+        SELECT
+        orders.*,
+        user.username,
+        user.address,
+        orderdetail.id orderdetail_id,
+        orderdetail.item_id,
+        orderdetail.item_num,
+        orderdetail.item_price
+        FROM orders,USER ,orderdetail
+        WHERE orders.user_id = user.id
+        AND orders.id = orderdetail.orders_id
+    </select>
+
+
+    <select id="findOrdersItemsList" resultMap="ordersItemsMap">
+            SELECT
+            orders.*,
+            user.username,
+            user.address,
+            orderdetail.id orderdetail_id,
+            orderdetail.item_id,
+            orderdetail.item_num,
+            orderdetail.item_price,
+            items.item_name,
+            items.item_detail
+            FROM
+            orders,USER ,orderdetail,items
+
+            WHERE orders.user_id = user.id
+            AND orders.id = orderdetail.orders_id
+            AND orderdetail.item_id = items.id
+    </select>
+
+
+</mapper>

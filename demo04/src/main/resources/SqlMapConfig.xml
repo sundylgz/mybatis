@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <properties resource="db.properties"></properties>
+    <settings>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="aggressiveLazyLoading" value="false"/>
+    </settings>
+
+    <typeAliases>
+        <!--单个别名定义 -->
+        <!--  <typeAlias alias="user" type="com.sundy.pojo.User"/>-->
+        <!--批量别名定义，扫描整个包下的类 -->
+        <package name="com.sundy.pojo"/>
+    </typeAliases>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+
+    <!-- 配置要加载的mapper.xml -->
+    <mappers>
+        <!--方式一配置mapper.xml-->
+        <!--<mapper resource="com/sundy/mapper/UserMapper.xml"/>-->
+        <!--注意：此种方法要求mapper接口名称和mapper映射文件名称相同，且放在同一个目录中。-->
+        <!-- <mapper class="com.sundy.mapper.UserMapper"></mapper>-->
+        <package name="com.sundy.mapper"/>
+    </mappers>
+</configuration>
